@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منظم المهام والعادات اليومية</title>
+    <style>
+        /* الألوان والتنسيقات الهادئة العامة */
+        :root {
+            --bg-color: #f7f9fb;
+            --card-bg: #ffffff;
+            --accent-soft: #84a9ac;
+            --accent-hover: #3b6978;
+            --text-main: #2b2e4a;
+            --text-muted: #6c757d;
+            --border-color: #e4e9ed;
+            --alert-bg: #fff3cd;
+            --alert-text: #856404;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* كروت الأقسام */
+        .card {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: var(--accent-hover);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+        }
+
+        /* 1. قائمة المهام */
+        .todo-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        button {
+            background-color: var(--accent-soft);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .todo-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .todo-item label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .todo-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-soft);
+            cursor: pointer;
+        }
+
+        .todo-item.completed span {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        /* التنبيه للمهام المتبقية */
+        .alert-box {
+            background-color: var(--alert-bg);
+            color: var(--alert-text);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* 2. تحدي اليوم */
+        .challenge-section {
+            text-align: center;
+        }
+
+        .challenge-card {
+            margin-top: 15px;
+            padding: 20px;
+            background-color: var(--bg-color);
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--accent-hover);
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* 3. تتبع العادات الشهري */
+        .habits-table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px 5px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85rem;
+        }
+
+        th:first-child, td:first-child {
+            text-align: right;
+            padding-right: 10px;
+            min-width: 150px;
+        }
+
+        /* الدوائر المرقّمة */
+        .day-circle {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1px solid var(--accent-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 0 auto;
+            font-size: 0.75rem;
+            color: var(--accent-hover);
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .day-circle.active {
+            background-color: var(--accent-soft);
+            color: white;
+            border-color: var(--accent-soft);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- القسم الأول: قائمة المهام اليومية -->
+        <div class="card">
+            <h2>📝 قائمة المهام اليومية</h2>
+            <div class="todo-input-group">
+                <input type="text" id="taskInput" placeholder="اكتب مهمتك هنا...">
+                <button onclick="addTask()">إضافة مهمة</button>
+            </div>
+
+            <ul class="todo-list" id="todoList"></ul>
+
+            <!-- صندوق التنبيه للمهام المتبقية -->
+            <div class="alert-box" id="reminderAlert"></div>
+        </div>
+
+        <!-- القسم الثاني: تحدي اليوم -->
+        <div class="card challenge-section">
+            <h2>🎯 تحدي اليوم</h2>
+            <button onclick="getDailyChallenge()">اكتشف تحدي اليوم</button>
+            <div class="challenge-card" id="challengeDisplay"></div>
+        </div>
+
+        <!-- القسم الثالث: تتبع العادات الشهري -->
+        <div class="card">
+            <h2>📅 تتبع العادات الشهري</h2>
+            <div class="todo-input-group">
+                <input type="text" id="habitInput" placeholder="أضف عادة جديدة لتتبعها...">
+                <button onclick="addHabit()">إضافة عادة</button>
+            </div>
+
+            <div class="habits-table-container">
+                <table id="habitsTable">
+                    <thead>
+                        <tr id="tableHeader">
+                            <th>العادة</th>
+                            <!-- الأيام من 1 إلى 30 هتنزل هنا بالـ JavaScript -->
+                        </tr>
+                    </thead>
+                    <tbody id="habitsBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /* --- 1. برمجة قائمة المهام --- */
+        let tasks = [];
+
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            const text = input.value.trim();
+
+            if (text !== '') {
+                tasks.push({ text: text, completed: false });
+                input.value = '';
+                renderTasks();
+            }
+        }
+
+        function toggleTask(index) {
+            tasks[index].completed = !tasks[index].completed;
+            renderTasks();
+        }
+
+        function renderTasks() {
+            const list = document.getElementById('todoList');
+            list.innerHTML = '';
+
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.className = `todo-item ${task.completed ? 'completed' : ''}`;
+                li.innerHTML = `
+                    <label>
+                        <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${index})">
+                        <span>${task.text}</span>
+                    </label>
+                `;
+                list.appendChild(li);
+            });
+
+            checkRemainingTasks();
+        }
+
+        function checkRemainingTasks() {
+            const alertBox = document.getElementById('reminderAlert');
+            const remaining = tasks.filter(t => !t.completed).length;
+
+            if (tasks.length > 0) {
+                alertBox.style.display = 'block';
+                if (remaining === 0) {
+                    alertBox.style.backgroundColor = '#d4edda';
+                    alertBox.style.color = '#155724';
+                    alertBox.innerText = '✨ رائع جداً! لقد أنهيت جميع مهامك اليوم.';
+                } else {
+                    alertBox.style.backgroundColor = 'var(--alert-bg)';
+                    alertBox.style.color = 'var(--alert-text)';
+                    alertBox.innerText = `💡 تذكير: باقي لديك (${remaining}) مهام لم تكتمل بعد!`;
+                }
+            } else {
+                alertBox.style.display = 'none';
+            }
+        }
+
+        /* --- 2. برمجة تحدي اليوم --- */
+        const challenges = [
+            "الاستغفار ١٠٠ مرة",
+            "شرب لتر ماء",
+            "انزل اتمشى شوية",
+            "بر أهلك (كلمة حلوة، مساعدة، أو هدية)",
+            "الصلاة على النبي ١٠٠ مرة",
+            "كتابة عادات عايز تبنيها في حياتك",
+            "كتابة صفات مش حلوة عايز تغيرها في شخصيتك",
+            "قراءة جزء من القرآن",
+            "مارس اللغة الإنجليزية لمدة ساعة في يومك",
+            "الحوقلة (لا حول ولا قوة إلا بالله) ١٠٠ مرة",
+            "طلع صدقة بسيطة في يومك",
+            "اكتب ٢٠ نعمة في حياتك انت ممتن ليها واحمد ربنا عليها",
+            "فرح نفسك النهاردة بأي حاجة تبسطك"
+        ];
+
+        function getDailyChallenge() {
+            const randomIndex = Math.floor(Math.random() * challenges.length);
+            const display = document.getElementById('challengeDisplay');
+            display.innerText = challenges[randomIndex];
+            display.style.display = 'block';
+        }
+
+        /* --- 3. برمجة جدول تتبع العادات الشهري --- */
+        // إنشاء رؤوس الأيام (من 1 لـ 30)
+        const tableHeader = document.getElementById('tableHeader');
+        for (let i = 1; i <= 30; i++) {
+            const th = document.createElement('th');
+            th.innerText = i;
+            tableHeader.appendChild(th);
+        }
+
+        function addHabit() {
+            const input = document.getElementById('habitInput');
+            const habitText = input.value.trim();
+
+            if (habitText !== '') {
+                const tbody = document.getElementById('habitsBody');
+                const tr = document.createElement('tr');
+
+                // اسم العادة
+                const tdName = document.createElement('td');
+                tdName.innerText = habitText;
+                tr.appendChild(tdName);
+
+                // إنشاء 30 دائرة للعادة
+                for (let i = 1; i <= 30; i++) {
+                    const tdDay = document.createElement('td');
+                    const circle = document.createElement('div');
+                    circle.className = 'day-circle';
+                    circle.innerText = i;
+                    
+                    // التبديل عند الضغط على الدائرة
+                    circle.onclick = function() {
+                        this.classList.toggle('active');
+                    };
+
+                    tdDay.appendChild(circle);
+                    tr.appendChild(tdDay);
+                }
+
+                tbody.appendChild(tr);
+                input.value = '';
+            }
+        }
+    </script>
+</body>
+  </html>
+  

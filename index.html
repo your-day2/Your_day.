@@ -196,6 +196,25 @@
             border-color: var(--accent-soft);
         }
 
+        /* 4. تنسيقات مؤقت البومودورو */
+        .pomodoro-section {
+            text-align: center;
+        }
+
+        .timer-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-hover);
+            margin: 15px 0;
+            font-family: monospace;
+        }
+
+        .pomodoro-btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-5px); }
             to { opacity: 1; transform: translateY(0); }
@@ -245,6 +264,17 @@
                     </thead>
                     <tbody id="habitsBody"></tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- القسم الرابع: مؤقت البومودورو -->
+        <div class="card pomodoro-section">
+            <h2>🍅 مؤقت البومودورو</h2>
+            <div class="timer-display" id="timerDisplay">25:00</div>
+            <div class="pomodoro-btn-group">
+                <button onclick="startTimer()">بدء</button>
+                <button onclick="pauseTimer()">إيقاف</button>
+                <button onclick="resetTimer()">إعادة</button>
             </div>
         </div>
 
@@ -375,8 +405,41 @@
                 input.value = '';
             }
         }
-   
+
+        /* --- 4. برمجة مؤقت البومودورو --- */
+        let timeLeft = 25 * 60;
+        let timerId = null;
+
+        function updateDisplay() {
+            let m = Math.floor(timeLeft / 60);
+            let s = timeLeft % 60;
+            document.getElementById('timerDisplay').innerText = 
+                `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }
+
+        function startTimer() {
+            if(timerId) return;
+            timerId = setInterval(() => {
+                timeLeft--;
+                updateDisplay();
+                if(timeLeft <= 0) {
+                    clearInterval(timerId);
+                    timerId = null;
+                    alert('🎉 انتهى وقت التركيز! خد استراحة.');
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerId);
+            timerId = null;
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeLeft = 25 * 60;
+            updateDisplay();
+        }
     </script>
 </body>
-  </html>
-  
+</html>

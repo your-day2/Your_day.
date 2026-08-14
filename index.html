@@ -377,6 +377,52 @@
         }
    
     </script>
+    <!-- كارت مؤقت البومودورو المظبوط بالعرض -->
+<div class="card" style="background: white; border-radius: 15px; padding: 20px; margin: 20px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; width: 100%; grid-column: 1 / -1; box-sizing: border-box; display: block; clear: both;">
+    <h3 style="color: #d6336c; margin-top: 0; font-size: 18px;">🍅 مؤقت البومودورو</h3>
+    <div id="timer-display" style="font-size: 32px; font-weight: bold; color: #c92a2a; margin: 10px 0;">25:00</div>
+    <div style="display: flex; justify-content: center; gap: 8px;">
+        <button onclick="startTimer()" style="background: #e03131; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer;">بدء</button>
+        <button onclick="pauseTimer()" style="background: #fab005; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer;">إيقاف</button>
+        <button onclick="resetTimer()" style="background: #868e96; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer;">إعادة</button>
+    </div>
+</div>
+
+<script>
+    let timeLeft = 25 * 60;
+    let timerId = null;
+
+    function updateDisplay() {
+        let m = Math.floor(timeLeft / 60);
+        let s = timeLeft % 60;
+        document.getElementById('timer-display').innerText = 
+            `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    }
+
+    function startTimer() {
+        if(timerId) return;
+        timerId = setInterval(() => {
+            timeLeft--;
+            updateDisplay();
+            if(timeLeft <= 0) {
+                clearInterval(timerId);
+                timerId = null;
+                alert('🎉 انتهى وقت التركيز! خد استراحة.');
+            }
+        }, 1000);
+    }
+
+    function pauseTimer() {
+        clearInterval(timerId);
+        timerId = null;
+    }
+
+    function resetTimer() {
+        pauseTimer();
+        timeLeft = 25 * 60;
+        updateDisplay();
+    }
+</script>
     
 </body>
   </html>

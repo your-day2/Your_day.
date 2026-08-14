@@ -377,6 +377,53 @@
         }
    
     </script>
+    <!-- بداية كود مؤقت البومودورو المعدل -->
+<div id="pomodoro-box" style="background-color: #fff5f5; border: 2px solid #ffcccc; padding: 12px 20px; border-radius: 15px; text-align: center; width: 90%; max-width: 600px; margin: 20px auto; font-family: sans-serif; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; box-sizing: border-box;">
+    <h4 style="color: #d6336c; margin: 0; font-size: 16px;">🍅 مؤقت البومودورو</h4>
+    <div id="timer-display" style="font-size: 26px; font-weight: bold; color: #c92a2a; margin: 5px 0;">25:00</div>
+    <div style="display: flex; gap: 6px;">
+        <button onclick="startTimer()" style="background: #e03131; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">بدء</button>
+        <button onclick="pauseTimer()" style="background: #fab005; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">إيقاف</button>
+        <button onclick="resetTimer()" style="background: #868e96; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px;">إعادة</button>
+    </div>
+</div>
+
+<script>
+    let timeLeft = 25 * 60;
+    let timerId = null;
+
+    function updateDisplay() {
+        let m = Math.floor(timeLeft / 60);
+        let s = timeLeft % 60;
+        document.getElementById('timer-display').innerText = 
+            `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    }
+
+    function startTimer() {
+        if(timerId) return;
+        timerId = setInterval(() => {
+            timeLeft--;
+            updateDisplay();
+            if(timeLeft <= 0) {
+                clearInterval(timerId);
+                timerId = null;
+                alert('🎉 انتهى وقت التركيز! خد استراحة.');
+            }
+        }, 1000);
+    }
+
+    function pauseTimer() {
+        clearInterval(timerId);
+        timerId = null;
+    }
+
+    function resetTimer() {
+        pauseTimer();
+        timeLeft = 25 * 60;
+        updateDisplay();
+    }
+</script>
+<!-- نهاية كود مؤقت البومودورو المعدل -->
     
 </body>
   </html>

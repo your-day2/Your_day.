@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-    <script src="https://pl30811863.effectivecpmnetwork.com/35/04/58/350458ab2183b752d7c9ea594c01d076.js"></script>
-    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منظم المهام والعادات اليومية</title>
+    
+    <!-- كود إثبات ملكية جوجل سيرش كونسول -->
+    <meta name="google-site-verification" content="u5ip7G65If23kGIVGOoLgaYjQpE2x3TFBtsXp8GtamY" />
+
+    <script src="https://pl30811863.effectivecpmnetwork.com/35/04/58/350458ab2183b752d7c9ea594c01d076.js"></script>
+    
     <style>
         /* الألوان والتنسيقات الهادئة العامة */
         :root {
@@ -215,6 +219,67 @@
             gap: 10px;
         }
 
+        /* 5. منظم العبادات والورد اليومي */
+        .wird-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .wird-group {
+            background-color: var(--bg-color);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .wird-group h3 {
+            margin-top: 0;
+            font-size: 1rem;
+            color: var(--accent-hover);
+            margin-bottom: 10px;
+        }
+
+        .wird-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .wird-item input[type="checkbox"] {
+            accent-color: var(--accent-soft);
+            width: 16px;
+            height: 16px;
+        }
+
+        .progress-container {
+            margin-top: 20px;
+            background-color: var(--bg-color);
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent-soft);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-5px); }
             to { opacity: 1; transform: translateY(0); }
@@ -278,6 +343,46 @@
             </div>
         </div>
 
+        <!-- القسم الخامس: منظم العبادات والورد اليومي -->
+        <div class="card">
+            <h2>🌿 منظم العبادات والورد اليومي</h2>
+            <div class="wird-grid">
+                
+                <!-- مجموعة الصلوات -->
+                <div class="wird-group">
+                    <h3>🕌 الصلوات الخمس</h3>
+                    <label class="wird-item"><input type="checkbox" class="wird-check" onchange="updateWirdProgress()"> صلاة الفجر</label>
+                    <label class="wird-item"><input type="checkbox" class="wird-check" onchange="updateWirdProgress()"> صلاة الظهر</label>
+                    <label class="wird-item"><input type="checkbox" class="wird-check" onchange="updateWirdProgress()"> صلاة العصر</label>
+                    <label class="wird-item"><input type="checkbox" class="wird-check" onchange="updateWirdProgress()"> صلاة المغرب</label>
+                    <label class="wird-item"><input type="checkbox" class="wird-check" onchange="updateWirdProgress()"> صلاة العشاء</label>
+                </div>
+
+                <!-- مجموعة الأذكار -->
+                <div class="wird-group">
+                    <h3>📖 الأذكار والسنن</h3>
+                    <label class="wird-item"><input type="checkbox" class="wird-check" onchange="updateWirdProgress()"> أذكار الصباح</label>
+                    <label class="wird-item"><input type="checkbox" class="wird-check" onchange="updateWirdProgress()"> أذكار المساء</label>
+                    <label class="wird-item"><input type="checkbox" class="wird-check" onchange="updateWirdProgress()"> صلاة الضحى</label>
+                    <label class="wird-item"><input type="checkbox" class="wird-check" onchange="updateWirdProgress()"> قيام الليل</label>
+                </div>
+
+                <!-- مجموعة الورد القُرآني -->
+                <div class="wird-group">
+                    <h3>✨ الورد والتلاوة</h3>
+                    <label class="wird-item"><input type="checkbox" class="wird-check" onchange="updateWirdProgress()"> قراءة الورد اليومي</label>
+                    <label class="wird-item"><input type="checkbox" class="wird-check" onchange="updateWirdProgress()"> قراءة سورة الملك</label>
+                </div>
+
+            </div>
+
+            <!-- شريط التقدم والإنجاز -->
+            <div class="progress-container">
+                <div class="progress-bar" id="wirdProgressBar"></div>
+            </div>
+            <div class="progress-text" id="wirdProgressText">إنجازك اليومي: 0%</div>
+        </div>
+
     </div>
 
     <script>
@@ -339,21 +444,38 @@
             }
         }
 
-        /* --- 2. برمجة تحدي اليوم --- */
+        /* --- 2. برمجة تحدي اليوم (30 تحدي متنوع) --- */
         const challenges = [
-            "الاستغفار ١٠٠ مرة",
-            "شرب لتر ماء",
-            "انزل اتمشى شوية",
-            "بر أهلك (كلمة حلوة، مساعدة، أو هدية)",
-            "الصلاة على النبي ١٠٠ مرة",
-            "كتابة عادات عايز تبنيها في حياتك",
-            "كتابة صفات مش حلوة عايز تغيرها في شخصيتك",
-            "قراءة جزء من القرآن",
-            "مارس اللغة الإنجليزية لمدة ساعة في يومك",
-            "الحوقلة (لا حول ولا قوة إلا بالله) ١٠٠ مرة",
-            "طلع صدقة بسيطة في يومك",
-            "اكتب ٢٠ نعمة في حياتك انت ممتن ليها واحمد ربنا عليها",
-            "فرح نفسك النهاردة بأي حاجة تبسطك"
+            "صلاة الضحى (ركعتين صلاة الأوابين)",
+            "قراءة سورة الملك قبل النوم",
+            "الاستغفار 100 مرة بيقين",
+            "الصلاة على النبي 100 مرة",
+            "قراءة صفحة واحدة بتمعن من القرآن الكريم",
+            "قراءة أذكار الصباح أو المساء في وقتها",
+            "صلاة ركعتين قيام ليل قبل النوم",
+            "الحوقلة (لا حول ولا قوة إلا بالله) 100 مرة",
+            "إرسال رسالة طيبة تشجع بيها حد من أصحابك أو أهلك",
+            "تقديم مساعدة بسيطة لحد في البيت من غير ما يطلب",
+            "التصدق بأي مبلغ بسيط أو إطعام طير/حيوان",
+            "ابتسامة وكلمة طيبة لأي حد تقابله النهاردة",
+            "إظهار الامتنان والشكر لشخص أثر في حياتك",
+            "المذاكرة أو العمل بتركيز لمدة 45 دقيقة بدون فتح الموبايل",
+            "كتابة 3 إنجازات بسيطة عملتها النهاردة مهما كانت صغيرة",
+            "تعلم 5 كلمات إنجليزية جديدة بالمعنى والنطق",
+            "قراءة 5 صفحات من كتاب مفيد أو مقال ملهم",
+            "ترتيب وتنظيف مكان مكتبك أو غرفتك بالكامل",
+            "كتابة 20 نعمة في حياتك وممتن ليها واحمد ربنا عليها",
+            "التخلص من عادة التأجيل في مهمة واحدة مؤجلة بقالها فترة",
+            "شرب 2 لتر ماء على مدار اليوم",
+            "المشي أو الحركة لمدة 15 دقيقة والتنفس بهدوء",
+            "الابتعاد عن السوشيال ميديا وقفل الموبايل ساعة كاملة قبل النوم",
+            "أخذ استراحة لمدة 10 دقائق للتنفس والاسترخاء وتفريغ العقبات",
+            "النوم المبكر للاستيقاظ بنشاط",
+            "التقليل من السكريات أو وجبة غير صحية النهاردة",
+            "عمل تمارين إطالة (Stretching) خفيفة للجسم بعد المذاكرة",
+            "غسل الوجه بماء بارد وتدليك العينين للراحة",
+            "الخروج في مكان مفتوح ورؤية السماء أو الطبيعة لدقائق",
+            "عمل حاجة بتحبها وبتفرحك النهاردة تكافئ بيها نفسك!"
         ];
 
         function getDailyChallenge() {
@@ -364,7 +486,6 @@
         }
 
         /* --- 3. برمجة جدول تتبع العادات الشهري --- */
-        // إنشاء رؤوس الأيام (من 1 لـ 30)
         const tableHeader = document.getElementById('tableHeader');
         for (let i = 1; i <= 30; i++) {
             const th = document.createElement('th');
@@ -380,19 +501,16 @@
                 const tbody = document.getElementById('habitsBody');
                 const tr = document.createElement('tr');
 
-                // اسم العادة
                 const tdName = document.createElement('td');
                 tdName.innerText = habitText;
                 tr.appendChild(tdName);
 
-                // إنشاء 30 دائرة للعادة
                 for (let i = 1; i <= 30; i++) {
                     const tdDay = document.createElement('td');
                     const circle = document.createElement('div');
                     circle.className = 'day-circle';
                     circle.innerText = i;
                     
-                    // التبديل عند الضغط على الدائرة
                     circle.onclick = function() {
                         this.classList.toggle('active');
                     };
@@ -440,6 +558,26 @@
             timeLeft = 25 * 60;
             updateDisplay();
         }
+
+        /* --- 5. برمجة منظم العبادات وشريط الإنجاز --- */
+        function updateWirdProgress() {
+            const checkboxes = document.querySelectorAll('.wird-check');
+            const total = checkboxes.length;
+            let checkedCount = 0;
+
+            checkboxes.forEach(cb => {
+                if(cb.checked) checkedCount++;
+            });
+
+            const percentage = Math.round((checkedCount / total) * 100);
+            
+            const progressBar = document.getElementById('wirdProgressBar');
+            const progressText = document.getElementById('wirdProgressText');
+
+            progressBar.style.width = percentage + '%';
+            progressText.innerText = `إنجازك الروحي اليومي: ${percentage}% 🌿`;
+        }
     </script>
 </body>
-</html>
+    </html>
+
